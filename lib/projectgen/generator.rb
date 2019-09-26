@@ -89,7 +89,7 @@ module ProjectGen
       # create cookie
       current_path = `pwd`.chomp
       cookigen_json_path = "#{current_path}/cookiegen.json"
-      IOSCookie::Cookie.create_cookie(cookigen_json_path)
+      Generator.create_cookie(cookigen_json_path)
 
       # generate project using cookiecutter
       system("cookiecutter #{current_path}/")
