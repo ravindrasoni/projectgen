@@ -1,22 +1,28 @@
 require 'json'
 
-$search_folder=`pwd`.chomp
+def search_folder
+  `pwd`.chomp
+end
 
 module ProjectGen
   class Generator
+
+    private
     def self.cookiecutter_string(key)
       return "{{ cookiecutter.#{key} }}"
     end
-
+    
+    private
     def self.should_ignore_path(path, ignore)
       intersection = ignore & path.split("/")
       return intersection.length > 0
     end
 
+    private
     def self.change_path(path, replacements)
       path_arr = path.split("/")
       last_path = path_arr.pop
-      path_suffix = $search_folder.chomp + (path_arr.length > 0 ? "/" + path_arr.join("/") : "")
+      path_suffix = search_folder.chomp + (path_arr.length > 0 ? "/" + path_arr.join("/") : "")
       replacements.keys.each do |key|
         old_last_path = last_path.dup
         while last_path.include? key
@@ -34,6 +40,8 @@ module ProjectGen
       return path_suffix + "/" + last_path
     end
 
+
+    private
     def self.update_files(replacements, ignore)
       # Fetch list of all files in the folder, rejecting all the ignored files
       # 'reverse' is to make sure we're updating subfolders/subfiles before main folders
@@ -60,6 +68,7 @@ module ProjectGen
       end
     end
 
+    private
     def self.create_cookie(json_path)
       json_file = File.read(json_path)
       jsonHash = JSON.parse(json_file)
@@ -68,19 +77,27 @@ module ProjectGen
       Generator.update_files(replacements, ignore)
     end
 
-    def self.generate_cookie(github_url)
-      command = "git clone #{github_url}"
-      puts command
+    def self.generate_project(github_url)
+      #clone the repo
+      `git clone #{github_url}`
+
+      # cd to the template repo
       project_dir = github_url.split('/').pop.chomp(".git").chomp
-      `cd #{project_dir}`
-      puts `pwd`
+      puts project_dir
+      Dir.chdir project_dir
+
+      # create cookie
+      current_path = `pwd`.chomp
+      cookigen_json_path = "#{current_path}/cookiegen.json"
+      IOSCookie::Cookie.create_cookie(cookigen_json_path)
+
+      # generate project using cookiecutter
+      system("cookiecutter #{current_path}/")
+
     end
 
   end
 end
-
-# IOSCookie::Cookie.create_cookie('/Users/soni/scripts/ios/ios.json')
-
 
 
 

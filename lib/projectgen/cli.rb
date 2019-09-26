@@ -1,18 +1,14 @@
 require 'thor'
-require 'cookiegen'
+require 'projectgen'
 
 module ProjectGen
   class CLI < Thor
-	desc "gen", "Generate cookie_cutter"
-	method_option :jsonpath, aliases: "-p", :desc => "provide json file path with mapping"
-	def gen
-	    puts ProjectGen::Generator.create_cookie(options[:jsonpath])
-	end
+  	default_task :gen
 
-	desc "gen1", "Generate cookie_cutter"
-	method_option :githuburl, aliases: "-p", :desc => "provide github url"
+	desc "gen", "Generate project from template"
+	method_option :github_url, aliases: "-g", :desc => "provide github_url with the mappings"
 	def gen
-
+	    puts ProjectGen::Generator.generate_project(options[:github_url])
 	end
 
   end
