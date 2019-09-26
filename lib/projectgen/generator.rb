@@ -78,21 +78,43 @@ module ProjectGen
     end
 
     def self.generate_project(github_url)
-      #clone the repo
-      `git clone #{github_url}`
+      moved_in = false
+      template_project_dir = nil
+      begin
+        #clone the repo
+        `git clone #{github_url}`
 
-      # cd to the template repo
-      project_dir = github_url.split('/').pop.chomp(".git").chomp
-      puts project_dir
-      Dir.chdir project_dir
+        # cd to the template repo
+        template_project_dir = github_url.split('/').pop.chomp(".git").chomp
+        puts template_project_dir
+        Dir.chdir template_project_dir
+        moved_in = true
+        # create cookie
+        current_path = `pwd`.chomp
+        cookigen_json_path = "#{current_path}/cookiegen.json"
+        Generator.create_cookie(cookigen_json_path)
 
-      # create cookie
-      current_path = `pwd`.chomp
-      cookigen_json_path = "#{current_path}/cookiegen.json"
-      Generator.create_cookie(cookigen_json_path)
+        # generate project using cookiecutter
+        system("cookiecutter #{current_path}/ -o ../")
 
-      # generate project using cookiecutter
-      system("cookiecutter #{current_path}/")
+        # Change Dir to folder up
+        Dir.chdir("../")
+
+        # Remove temp folder
+        system("rm -rf #{template_project_dir}")
+      rescue Exception => e
+        puts "Exception"
+        puts e
+        if moved_in && !template_project_dir.nil?
+          # Change Dir to folder up
+          Dir.chdir("../")
+
+          # Remove temp folder
+          system("rm -rf #{template_project_dir}")
+        end
+        
+      end
+
 
     end
 
