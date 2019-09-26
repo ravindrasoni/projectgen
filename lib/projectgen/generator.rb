@@ -80,10 +80,21 @@ module ProjectGen
     def self.generate_project(github_url)
       moved_in = false
       template_project_dir = nil
-      begin
-        #clone the repo
-        `git clone #{github_url}`
 
+      begin
+        # putting this in seperate block to avoid cases where user already has a folder 
+        # with the same name as template and to avoid this script to delete that folder if
+        # an exception is raised
+
+        # Step 1: clone the repo
+        `git clone #{github_url}`
+      rescue Exception => e
+        puts "Exception"
+        puts e
+        return
+      end
+
+      begin
         # cd to the template repo
         template_project_dir = github_url.split('/').pop.chomp(".git").chomp
         puts template_project_dir
