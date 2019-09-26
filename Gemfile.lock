@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    cookiegen (0.1.0)
+    projectgen (0.1.0)
       thor
 
 GEM
@@ -29,7 +29,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 2.0)
-  cookiegen!
+  projectgen!
   rake (~> 10.0)
   rspec (~> 3.2)
 

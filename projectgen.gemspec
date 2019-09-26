@@ -1,23 +1,23 @@
 lib = File.expand_path("lib", __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "cookiegen/version"
+require "projectgen/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "cookiegen"
-  spec.version       = CookieGen::VERSION
+  spec.name          = "projectgen"
+  spec.version       = ProjectGen::VERSION
   spec.authors       = ["Ravindra Soni"]
   spec.email         = ["soni@nickelfox.com"]
 
-  spec.summary       = %q{Generate cookiecutters from templates}
-  spec.description   = %q{Generate cookiecutters from templates. Use a json file to definer mapping and that's it}
-  spec.homepage      = "http://github.com/ravindrasoni/cookiegen"
+  spec.summary       = %q{Generate projects from templates}
+  spec.description   = %q{Generate projects from templates. Use a json file to definer mapping and that's it}
+  spec.homepage      = "http://github.com/ravindrasoni/projectgen"
   spec.license       = "MIT"
 
   # spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "http://github.com/ravindrasoni/cookiegen"
-  spec.metadata["changelog_uri"] = "http://github.com/ravindrasoni/cookiegen"
+  spec.metadata["source_code_uri"] = "http://github.com/ravindrasoni/projectgen"
+  spec.metadata["changelog_uri"] = "http://github.com/ravindrasoni/projectgen"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.

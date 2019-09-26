@@ -2,7 +2,7 @@ require 'json'
 
 $search_folder=`pwd`.chomp
 
-module CookieGen
+module ProjectGen
   class Generator
     def self.cookiecutter_string(key)
       return "{{ cookiecutter.#{key} }}"
@@ -66,6 +66,14 @@ module CookieGen
       replacements = jsonHash["replace"]
       ignore = jsonHash["ignore"]
       Generator.update_files(replacements, ignore)
+    end
+
+    def self.generate_cookie(github_url)
+      command = "git clone #{github_url}"
+      puts command
+      project_dir = github_url.split('/').pop.chomp(".git").chomp
+      `cd #{project_dir}`
+      puts `pwd`
     end
 
   end
