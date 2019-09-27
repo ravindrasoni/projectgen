@@ -83,7 +83,9 @@ module ProjectGen
       begin
 
         # Step 1: clone the repo
-        `git clone #{github_url}`
+        if !system("git clone #{github_url}")
+          raise StandardError.new("Couldn't clone git repo.")
+        end
 
         # cd to the template repo
         template_project_dir = github_url.split('/').pop.chomp(".git").chomp
@@ -103,7 +105,7 @@ module ProjectGen
 
         # Remove temp folder
         system("rm -rf #{template_project_dir}")
-      rescue Exception => e
+      rescue StandardError => e
         puts "Exception"
         puts e
         if moved_in && !template_project_dir.nil?
@@ -113,12 +115,8 @@ module ProjectGen
           # Remove temp folder
           system("rm -rf #{template_project_dir}")
         end
-        
       end
-
-
     end
-
   end
 end
 
