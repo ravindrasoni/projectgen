@@ -1,7 +1,7 @@
 require 'json'
 
 def search_folder
-  `pwd`.chomp
+  Dir.pwd
 end
 
 module ProjectGen
@@ -93,7 +93,7 @@ module ProjectGen
         Dir.chdir template_project_dir
         moved_in = true
         # create cookie
-        current_path = `pwd`.chomp
+        current_path = Dir.pwd
         cookigen_json_path = "#{current_path}/cookiegen.json"
         Generator.create_cookie(cookigen_json_path)
 
@@ -119,6 +119,4 @@ module ProjectGen
     end
   end
 end
-
-
 
